@@ -1,0 +1,19 @@
+---
+spring:
+  profiles: production # test server configuration
+  data:
+    neo4j:
+      username: neo4j
+      password: admin
+      uri: bolt://localhost:7687
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      clientId: spring-security-oauth2-read-write-client
+      clientSecret: spring-security-oauth2-read-write-client-password1234
+      accessTokenUri: http://localhost:8081/com.trinity.dev.auth/oauth/token
+      userAuthorizationUri: http://localhost:8081/com.trinity.dev.auth/oauth/authorize
+    resource:
+      userInfoUri: http://localhost:8081/com.trinity.dev.auth/api/userInfo

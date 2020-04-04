@@ -1,0 +1,43 @@
+server:
+    servlet:
+      context-path: /com.trinity.dev.agora
+    port: 8082
+spring:
+  profiles.active: developer # test server configuration
+  application: 
+    name: com.trinity.dev.agora
+  jmx:
+    default-server: com.trinity.dev.agora
+#  main:
+#    allow-bean-definition-overriding: true
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      clientId: spring-security-oauth2-read-write-client
+      clientSecret: spring-security-oauth2-read-write-client-password1234
+      accessTokenUri: http://localhost:8081/com.trinity.dev.auth.${spring.profiles.active}/oauth/token
+      userAuthorizationUri: http://localhost:8081/com.trinity.dev.auth.${spring.profiles.active}/oauth/authorize
+    resource:
+      userInfoUri: http://localhost:8081/com.trinity.dev.auth.${spring.profiles.active}/api/user/userInfo    
+    
+#---
+#spring:
+#  profiles: developer # test server configuration
+#  data:
+#    neo4j:
+#      username: neo4j
+#      password: admin
+#      uri: bolt://localhost:7687
+#security:
+#  basic:
+#    enabled: false
+#  oauth2:
+#    client:
+#      clientId: spring-security-oauth2-read-write-client
+#      clientSecret: spring-security-oauth2-read-write-client-password1234
+#      accessTokenUri: http://localhost:8081/com.trinity.dev.auth/oauth/token
+#      userAuthorizationUri: http://localhost:8081/com.trinity.dev.auth/oauth/authorize
+#    resource:
+#      userInfoUri: http://localhost:8081/com.trinity.dev.auth/api/userInfo
