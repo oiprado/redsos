@@ -8,9 +8,9 @@
 	},
 	"item": [
 		{
-			"name": "http://localhost:8082/com.trinity.dev.agora/api/redsos/cancel",
+			"name": "http://localhost:8082/com.trinity.dev.agora/api/redsos/cancel-attend",
 			"request": {
-				"url": "http://localhost:8082/com.trinity.dev.agora/api/redsos/cancel",
+				"url": "http://localhost:8082/com.trinity.dev.agora/api/redsos/cancel-attend",
 				"method": "POST",
 				"header": [
 					{
@@ -82,6 +82,37 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n    \"profileName\": \"eprani\",\n    \"name\": \"Emmanuel Prado Ninco\",\n    \"mail\":\"oiprado@gmail.com\",\n    \"address\": \"Calle 1 # 3-46 Yumbo\",\n    \"active\": true\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8082/com.trinity.dev.agora/api/redsos/available-services",
+			"request": {
+				"url": "http://localhost:8082/com.trinity.dev.agora/api/redsos/available-services",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8082/com.trinity.dev.agora/api/redsos/cancel-service",
+			"request": {
+				"url": "http://localhost:8082/com.trinity.dev.agora/api/redsos/cancel-service",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"service\": {\n\t\t\"guid\": \"cad9fe1f-c904-4bd5-a9da-c57b96d4bb55\"\n\t},\n\t\"person\": {\n\t\t\"guid\": \"da5994cd-8176-4325-bf20-718308d0f0db\"\n\t}\n}"
 				},
 				"description": ""
 			},
