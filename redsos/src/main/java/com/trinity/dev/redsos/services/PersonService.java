@@ -13,6 +13,6 @@ import com.trinity.dev.redsos.dto.Person;
  */
 public interface PersonService {
     
-    public void create(Person person);
+    public com.trinity.dev.redsos.domain.Person create(Person person);
     
 }

@@ -32,8 +32,6 @@ public class RedSOSServiceImpl implements RedSOSService {
 
     @Autowired
     private ServiceRepository serviceRepository;
-//    @Autowired
-//    private PersonRepository personRepository;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
@@ -121,7 +119,7 @@ public class RedSOSServiceImpl implements RedSOSService {
     public void cancel(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
         
         AttendRelationship attendRelationship =
-            attendRelationshipRepository.findAttendRelationshipByGUIDs(
+            attendRelationshipRepository.getAttendRelationshipByGUIDs(
                 service.getGuid(), 
                 person.getGuid()
             );

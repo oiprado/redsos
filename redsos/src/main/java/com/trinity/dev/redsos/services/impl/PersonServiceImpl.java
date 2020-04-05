@@ -27,10 +27,11 @@ public class PersonServiceImpl implements PersonService {
     
     
     @Override
-    public void create(com.trinity.dev.redsos.dto.Person person) {
+    public Person create(com.trinity.dev.redsos.dto.Person person) {
         Person create = util.convertTo(person, Person.class);
         create.setGuid(UUID.randomUUID().toString());
         personRepository.save(create);
+        return create;
     }
     
 }

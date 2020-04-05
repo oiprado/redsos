@@ -29,8 +29,7 @@ public class PersonResource {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Person person) {
         try {
-            personService.create(person);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity(personService.create(person), HttpStatus.OK);
         }catch(Exception ex) {
             return new ResponseEntity(ex, HttpStatus.BAD_REQUEST);
         }

@@ -18,8 +18,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AttendRelationshipRepository extends Neo4jRepository<AttendRelationship, Long>{
     
-    @Query("MATCH (p:Person)-[r:ATTEND]->(s:Service) WHERE s.guid = {service} AND p.guid = {person} RETURN r")
-    public AttendRelationship findAttendRelationshipByGUIDs(
+    @Query("MATCH (p:Person { guid: {person} } )-[r:ATTEND]->(s:Service { guid: {service} } ) RETURN r")
+    public AttendRelationship getAttendRelationshipByGUIDs(
         final @Param("service") String service, 
         final @Param("person") String person
     );
