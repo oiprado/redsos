@@ -6,6 +6,7 @@
 package com.trinity.dev.redsos.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.Set;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Index;
@@ -34,9 +35,11 @@ public class Person {
     private String address;
     @Property("active")
     private boolean active;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties("endNode")
     @Relationship(type = "CREATE")
     private Set<Service> createServices;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonIgnoreProperties("endNode")
     @Relationship(type = "ATTEND")
     private Set<Service> attendServices;

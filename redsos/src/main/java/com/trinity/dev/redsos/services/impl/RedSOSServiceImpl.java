@@ -20,6 +20,7 @@ import com.trinity.dev.redsos.repository.relationship.ProductRelationshipReposit
 import com.trinity.dev.redsos.services.RedSOSService;
 import com.trinity.dev.redsos.util.Util;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,40 +43,40 @@ public class RedSOSServiceImpl implements RedSOSService {
     private CreateRelationshipRepository createRelationshipRepository;
     @Autowired
     private Util util;
-    
+
     @Override
     public void createService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
-        
+
         Service create = util.convertTo(service, Service.class);
         Person createBy = getPersonById(person.getGuid());
-        
+
         create.setGuid(UUID.randomUUID().toString());
         create.setStatus("NEW");
-        
+
         serviceRepository.save(create);
         createRelationshipRepository.save(
-            new CreateRelationship(
-                UUID.randomUUID(),
-                createBy,
-                create
-            )
+                new CreateRelationship(
+                        UUID.randomUUID(),
+                        createBy,
+                        create
+                )
         );
-        
-        if(service.getProducts() != null) {
+
+        if (service.getProducts() != null) {
             service.getProducts().forEach(product -> {
                 Product item = util.convertTo(product, Product.class);
                 productRepository.save(item);
                 productRelationshipRepository.save(new ProductRelationship(create, item));
             });
-        }        
+        }
     }
 
     @Override
     public void attendService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person, Date deliveryDate, String timeRange) {
-        
+
         Service create = getServiceById(service.getGuid());
         Person attendBy = getPersonById(person.getGuid());
-        
+
         attendRelationshipRepository.save(
             new AttendRelationship(
                 UUID.randomUUID(),
@@ -85,18 +86,17 @@ public class RedSOSServiceImpl implements RedSOSService {
                 timeRange
             )
         );
-        
+
         create.setStatus("ATTENDED");
-        
+
         serviceRepository.save(create);
-        
-        
+
     }
-    
+
     private Person getPersonById(String guid) {
         return util.getPersonByGuid(guid);
     }
-    
+
     private Service getServiceById(String guid) {
         return util.getServiceByGuid(guid);
     }
@@ -116,17 +116,34 @@ public class RedSOSServiceImpl implements RedSOSService {
     }
 
     @Override
-    public void cancel(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
-        
-        AttendRelationship attendRelationship =
-            attendRelationshipRepository.getAttendRelationshipByGUIDs(
-                service.getGuid(), 
-                person.getGuid()
-            );
-        
-        attendRelationship.setStatus("CANCELLED");
-        
-        attendRelationshipRepository.save(attendRelationship);
+    public void cancelAttend(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
+
+        Service create = getServiceById(service.getGuid());
+        create.setStatus("NEW");
+
+        serviceRepository.save(create);
+        attendRelationshipRepository.cancelRelationship(
+            service.getGuid(),
+            person.getGuid()
+        );
     }
     
+    @Override
+    public void cancelService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
+
+        Service create = getServiceById(service.getGuid());
+        create.setStatus("CANCELLED");
+
+        serviceRepository.save(create);
+        createRelationshipRepository.cancelRelationship(
+            service.getGuid(), 
+            person.getGuid()
+        );
+    }
+
+    @Override
+    public List<Service> availableServices() {
+        return serviceRepository.getServicesByStatus("NEW");
+    }
+
 }

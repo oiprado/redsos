@@ -28,6 +28,13 @@ public class PersonServiceImpl implements PersonService {
     
     @Override
     public Person create(com.trinity.dev.redsos.dto.Person person) {
+        
+        Person exist = personRepository.findByProfileName(person.getProfileName());
+        
+        if(exist != null) {
+            return exist;
+        }
+            
         Person create = util.convertTo(person, Person.class);
         create.setGuid(UUID.randomUUID().toString());
         personRepository.save(create);

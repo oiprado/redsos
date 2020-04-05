@@ -5,6 +5,7 @@
  */
 package com.trinity.dev.redsos.repository.relationship;
 
+import com.trinity.dev.redsos.domain.relationship.AttendRelationship;
 import com.trinity.dev.redsos.domain.relationship.CreateRelationship;
 import java.io.Serializable;
 import org.springframework.data.neo4j.annotation.Query;
@@ -22,4 +23,9 @@ public interface CreateRelationshipRepository extends Neo4jRepository<CreateRela
     @Query("MATCH (n:Service { guid: {guid} })<-[r:CREATE]-() RETURN r")
     public CreateRelationship findByServiceGuid(@Param("guid") String guid);
     
+    @Query("MATCH (p:Person { guid: {person} } )-[r:CREATE]->(s:Service { guid: {service} } ) SET r.status = 'CANCELLED' ")
+    public AttendRelationship cancelRelationship( 
+        final @Param("service") String service, 
+        final @Param("person") String person
+    );
 }

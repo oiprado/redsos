@@ -48,7 +48,7 @@ public class CreateRelationship {
         this.id = id;
         this.person = person;
         this.service = service;
-        this.status = "NEW";
+        this.status = "ACTIVE";
         this.publishedDate = new Date();
     }
 

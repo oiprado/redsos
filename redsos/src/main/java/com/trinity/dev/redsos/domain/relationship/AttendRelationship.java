@@ -44,6 +44,7 @@ public class AttendRelationship {
         this.deliveryDate = deliveryDate;
         this.id = id;
         this.timeRange = timeRange;
+        this.status = "ACTIVE";
     }
 
     public UUID getId() {

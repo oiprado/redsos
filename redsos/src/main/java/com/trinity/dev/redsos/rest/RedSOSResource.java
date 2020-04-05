@@ -26,6 +26,16 @@ public class RedSOSResource {
 
     @Autowired
     private RedSOSService redSOSService;
+    
+    @RequestMapping(value = "/available-services", method = RequestMethod.GET)
+    public ResponseEntity availableServices() {
+
+        try {
+            return new ResponseEntity(redSOSService.availableServices(), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity(ex, HttpStatus.BAD_GATEWAY);
+        }
+    }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody CreateServiceRequest createServiceRequest) {
@@ -76,10 +86,23 @@ public class RedSOSResource {
         }
     }
     
-    @RequestMapping(value = "/cancel", method = RequestMethod.POST)
-    public ResponseEntity cancel(@RequestBody CreateServiceRequest createServiceRequest) {
+    @RequestMapping(value = "/cancel-attend", method = RequestMethod.POST)
+    public ResponseEntity cancelAttend(@RequestBody CreateServiceRequest createServiceRequest) {
         try {
-            redSOSService.cancel(
+            redSOSService.cancelAttend(
+                createServiceRequest.getService(),
+                createServiceRequest.getPerson()
+            );
+            return new ResponseEntity(HttpStatus.OK);
+        }catch(Exception ex) {
+           return new ResponseEntity(ex, HttpStatus.BAD_REQUEST);
+        }
+    }
+    
+    @RequestMapping(value = "/cancel-service", method = RequestMethod.POST)
+    public ResponseEntity cancelService(@RequestBody CreateServiceRequest createServiceRequest) {
+        try {
+            redSOSService.cancelService(
                 createServiceRequest.getService(),
                 createServiceRequest.getPerson()
             );

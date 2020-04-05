@@ -21,6 +21,9 @@ public interface PersonRepository extends Neo4jRepository<Person, String> {
     
     public Person findByName(String name);
     
+    @Query("MATCH(p:Person { profileName: {profileName} }) return p")
+    public Person findByProfileName(@Param("profileName") String profileName);
+    
     public Person findOneByGuid(String guid);
     
     @Query("MATCH(p:Person { guid: {guid} }) RETURN p")

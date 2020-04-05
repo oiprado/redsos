@@ -40,7 +40,7 @@ public class Service {
     private String longitude;
     @Property("tags")
     private String tags;
-    @JsonIgnoreProperties("endNode")
+//    @JsonIgnoreProperties("endNode")
     @Relationship(type = "HAS")
     private Set<Product> hasProducts;
 
