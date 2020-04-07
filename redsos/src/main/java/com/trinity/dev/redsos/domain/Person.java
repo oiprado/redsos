@@ -36,11 +36,11 @@ public class Person {
     @Property("active")
     private boolean active;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonIgnoreProperties("endNode")
+//    @JsonIgnoreProperties("endNode")
     @Relationship(type = "CREATE")
     private Set<Service> createServices;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonIgnoreProperties("endNode")
+//    @JsonIgnoreProperties("endNode")
     @Relationship(type = "ATTEND")
     private Set<Service> attendServices;
 

@@ -11,6 +11,7 @@ package com.trinity.dev.redsos.repository;
  */
 import com.trinity.dev.redsos.domain.Person;
 import java.util.List;
+import java.util.Set;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.repository.query.Param;
@@ -32,8 +33,10 @@ public interface PersonRepository extends Neo4jRepository<Person, String> {
     @Query("MATCH(p:Person { guid: {guid} }) RETURN p")
     public Person getPersonToFollow(final@Param("guid") String guid);
     
-//    public Person findRelationship();
+    @Query("MATCH(p:Person)-[:CREATE]->(s:Service) where s.guid = {guid} return p")
+    public Set<Person> getCreatePersonByService(String guid);
     
-    @Query("MATCH (p:Entity { guid: {own} })-[r:FOLLOW_TO]->(a:Entity { guid: {profile} } ) DELETE r")
-    public void unfollow(@Param("own") String own, @Param("profile") String profile);
+    @Query("MATCH(p:Person)-[:ATTEND]->(s:Service) where s.guid = {guid} return p")
+    public Set<Person> getAttendPersonByService(String guid);
+    
 }

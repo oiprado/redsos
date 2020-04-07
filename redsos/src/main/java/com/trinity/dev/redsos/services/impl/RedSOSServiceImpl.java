@@ -21,7 +21,9 @@ import com.trinity.dev.redsos.services.RedSOSService;
 import com.trinity.dev.redsos.util.Util;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -31,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @org.springframework.stereotype.Service
 public class RedSOSServiceImpl implements RedSOSService {
 
+    @Autowired
+    private PersonRepository personRepository;
     @Autowired
     private ServiceRepository serviceRepository;
     @Autowired
@@ -78,13 +82,13 @@ public class RedSOSServiceImpl implements RedSOSService {
         Person attendBy = getPersonById(person.getGuid());
 
         attendRelationshipRepository.save(
-            new AttendRelationship(
-                UUID.randomUUID(),
-                attendBy,
-                create,
-                deliveryDate,
-                timeRange
-            )
+                new AttendRelationship(
+                        UUID.randomUUID(),
+                        attendBy,
+                        create,
+                        deliveryDate,
+                        timeRange
+                )
         );
 
         create.setStatus("ATTENDED");
@@ -123,11 +127,11 @@ public class RedSOSServiceImpl implements RedSOSService {
 
         serviceRepository.save(create);
         attendRelationshipRepository.cancelRelationship(
-            service.getGuid(),
-            person.getGuid()
+                service.getGuid(),
+                person.getGuid()
         );
     }
-    
+
     @Override
     public void cancelService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
 
@@ -136,14 +140,34 @@ public class RedSOSServiceImpl implements RedSOSService {
 
         serviceRepository.save(create);
         createRelationshipRepository.cancelRelationship(
-            service.getGuid(), 
+            service.getGuid(),
             person.getGuid()
         );
     }
 
     @Override
-    public List<Service> availableServices() {
-        return serviceRepository.getServicesByStatus("NEW");
+    public List<Service> availableServices(String user) {
+
+        List<Service> services = serviceRepository.getServicesByStatus("NEW", user);
+
+        services.forEach(service -> {
+                service.setAttendPersons(
+                    personRepository.getAttendPersonByService(service.getGuid())
+                );
+
+                service.setCreatePersons(
+                    personRepository.getCreatePersonByService(service.getGuid())
+                );
+            }
+        );
+
+        return services;
+    }
+
+    @Override
+    public Iterable<Map<String,Object>> getPermitActions(String serviceGuid, String userGuid) {
+        
+        return serviceRepository.getPermitActions(serviceGuid, userGuid);
     }
 
 }

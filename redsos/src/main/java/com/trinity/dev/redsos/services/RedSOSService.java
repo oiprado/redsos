@@ -9,6 +9,7 @@ import com.trinity.dev.redsos.dto.Person;
 import com.trinity.dev.redsos.dto.Service;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -18,7 +19,7 @@ public interface RedSOSService {
     
     public void createService(Service service, Person person);
     
-    public List<com.trinity.dev.redsos.domain.Service> availableServices();
+    public List<com.trinity.dev.redsos.domain.Service> availableServices(String user);
     
     public void attendService(Service service, Person person, Date deliveryDate, String timeRange);
     
@@ -29,5 +30,7 @@ public interface RedSOSService {
     public void cancelAttend(Service service, Person person);
     
     public void cancelService(Service service, Person person);
+    
+    public Iterable<Map<String,Object>> getPermitActions(String serviceGuid, String userGuid);
     
 }

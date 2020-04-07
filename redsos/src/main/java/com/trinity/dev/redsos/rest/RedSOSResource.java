@@ -8,12 +8,14 @@ package com.trinity.dev.redsos.rest;
 import com.trinity.dev.redsos.dto.AttendServiceRequest;
 import com.trinity.dev.redsos.dto.CreateServiceRequest;
 import com.trinity.dev.redsos.services.RedSOSService;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -28,15 +30,25 @@ public class RedSOSResource {
     private RedSOSService redSOSService;
     
     @RequestMapping(value = "/available-services", method = RequestMethod.GET)
-    public ResponseEntity availableServices() {
+    public ResponseEntity availableServices(@RequestParam("user") String user) {
 
-        try {
-            return new ResponseEntity(redSOSService.availableServices(), HttpStatus.OK);
+        try {            
+            return new ResponseEntity(redSOSService.availableServices(user), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(ex, HttpStatus.BAD_GATEWAY);
         }
     }
-
+    
+    @RequestMapping(value = "/permit-actions", method = RequestMethod.GET)
+    public ResponseEntity permitActions(@RequestParam("service") String service, @RequestParam("user") String user) {
+        try {            
+            Iterable<Map<String, Object>> actions = redSOSService.getPermitActions(service, user);
+            return new ResponseEntity(actions, HttpStatus.OK);
+        }catch(Exception ex) {
+           return new ResponseEntity(ex, HttpStatus.BAD_REQUEST);
+        }
+    }
+    
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody CreateServiceRequest createServiceRequest) {
 

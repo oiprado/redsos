@@ -5,7 +5,6 @@
  */
 package com.trinity.dev.redsos.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Date;
 import java.util.Set;
 import org.neo4j.ogm.annotation.Id;
@@ -43,6 +42,10 @@ public class Service {
 //    @JsonIgnoreProperties("endNode")
     @Relationship(type = "HAS")
     private Set<Product> hasProducts;
+    @Relationship(type = "ATTEND", direction = Relationship.INCOMING)
+    private Set<Person> attendPersons;
+    @Relationship(type = "CREATE", direction = Relationship.INCOMING)
+    private Set<Person> createPersons;
 
     public Service(String guid, String message, String description, Date publishedDate, String type, String status, String latitude, String longitude, String tags, Set<Product> hasProducts) {
         this.guid = guid;
@@ -138,6 +141,22 @@ public class Service {
 
     public void setHasProducts(Set<Product> hasProducts) {
         this.hasProducts = hasProducts;
+    }
+
+    public Set<Person> getAttendPersons() {
+        return attendPersons;
+    }
+
+    public void setAttendPersons(Set<Person> attendPersons) {
+        this.attendPersons = attendPersons;
+    }
+
+    public Set<Person> getCreatePersons() {
+        return createPersons;
+    }
+
+    public void setCreatePersons(Set<Person> createPersons) {
+        this.createPersons = createPersons;
     }
 
 }

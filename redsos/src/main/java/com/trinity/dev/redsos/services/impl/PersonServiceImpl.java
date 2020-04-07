@@ -32,7 +32,7 @@ public class PersonServiceImpl implements PersonService {
         Person exist = personRepository.findByProfileName(person.getProfileName());
         
         if(exist != null) {
-            return exist;
+            throw new RuntimeException("User already exists");
         }
             
         Person create = util.convertTo(person, Person.class);
