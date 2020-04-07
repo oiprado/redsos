@@ -31,6 +31,6 @@ public interface RedSOSService {
     
     public com.trinity.dev.redsos.domain.Service cancelService(Service service, Person person);
     
-    public Iterable<Map<String,Object>> getPermitActions(String serviceGuid, String userGuid);
+    public Map<String,Object> getPermitActions(String serviceGuid, String userGuid);
     
 }

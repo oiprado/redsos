@@ -39,21 +39,25 @@ public interface ServiceRepository extends Neo4jRepository<Service, String>{
         "OPTIONAL MATCH (a:Person  { guid: {personGuid} } )-[ar:ATTEND]->(s)\n" +
         "return \n" +
         "CASE \n" +
-        " WHEN count(cr) = 1  THEN 'can-cancel-service'\n" +
-        " ELSE 'cannot-cancel-service'\n" +
-        "END AS cancelService, \n" +
+        " WHEN count(cr) = 1  THEN true \n" +
+        " ELSE false \n" +
+        "END AS canCancelService, \n" +
         "CASE\n" +
-        " WHEN count(ar) = 1  THEN 'can-cancel-attend'\n" +
-        " ELSE 'cannot-cancel-attend'\n" +
-        "END AS cancelAttend,\n" +
+        " WHEN count(ar) = 1  THEN true\n" +
+        " ELSE false\n" +
+        "END AS canCancelAttend,\n" +
         "CASE\n" +
-        " WHEN count(ar) > 1 OR ar.status = 'ACTIVE'  THEN 'can-service-attended'\n" +
-        " ELSE 'cannot-service-attended'\n" +
+        " WHEN count(ar) > 1 OR ar.status = 'ACTIVE'  THEN true\n" +
+        " ELSE false\n" +
         "END AS canAttended,\n" +
         "CASE\n" +
-        " WHEN s.status = 'DELIVERED' THEN 'can-accept-delivery'\n" +
-        " ELSE 'cannot-accept-attend'\n" +
-        "END AS acceptDelivery"
+        " WHEN count(ar) > 1 OR ar.status = 'ACTIVE'  THEN true\n" +
+        " ELSE false\n" +
+        "END AS canDeliver,\n" +
+        "CASE\n" +
+        " WHEN s.status = 'DELIVERED' THEN true\n" +
+        " ELSE false\n" +
+        "END AS canAcceptDelivery"
     )
     public Iterable<Map<String,Object>> getPermitActions(@Param("serviceGuid") String serviceGuid, @Param("personGuid") String personGuid);
 }

@@ -41,7 +41,7 @@ public class RedSOSResource {
     @RequestMapping(value = "/permit-actions", method = RequestMethod.GET)
     public ResponseEntity permitActions(@RequestParam("service") String service, @RequestParam("user") String user) {
         try {            
-            Iterable<Map<String, Object>> actions = redSOSService.getPermitActions(service, user);
+            Map<String, Object> actions = redSOSService.getPermitActions(service, user);
             return new ResponseEntity(actions, HttpStatus.OK);
         }catch(Exception ex) {
            return new ResponseEntity(ex, HttpStatus.BAD_REQUEST);

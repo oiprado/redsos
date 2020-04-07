@@ -169,9 +169,8 @@ public class RedSOSServiceImpl implements RedSOSService {
     }
 
     @Override
-    public Iterable<Map<String,Object>> getPermitActions(String serviceGuid, String userGuid) {
-        
-        return serviceRepository.getPermitActions(serviceGuid, userGuid);
+    public Map<String,Object> getPermitActions(String serviceGuid, String userGuid) {
+        return serviceRepository.getPermitActions(serviceGuid, userGuid).iterator().next();
     }
 
 }
