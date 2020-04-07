@@ -49,8 +49,7 @@ public class RedSOSServiceImpl implements RedSOSService {
     private Util util;
 
     @Override
-    public void createService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
-
+    public Service createService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
         Service create = util.convertTo(service, Service.class);
         Person createBy = getPersonById(person.getGuid());
 
@@ -73,11 +72,12 @@ public class RedSOSServiceImpl implements RedSOSService {
                 productRelationshipRepository.save(new ProductRelationship(create, item));
             });
         }
+        
+        return create;
     }
 
     @Override
-    public void attendService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person, Date deliveryDate, String timeRange) {
-
+    public Service attendService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person, Date deliveryDate, String timeRange) {
         Service create = getServiceById(service.getGuid());
         Person attendBy = getPersonById(person.getGuid());
 
@@ -94,7 +94,7 @@ public class RedSOSServiceImpl implements RedSOSService {
         create.setStatus("ATTENDED");
 
         serviceRepository.save(create);
-
+        return create;
     }
 
     private Person getPersonById(String guid) {
@@ -106,21 +106,23 @@ public class RedSOSServiceImpl implements RedSOSService {
     }
 
     @Override
-    public void deliveredService(com.trinity.dev.redsos.dto.Service service) {
+    public Service deliveredService(com.trinity.dev.redsos.dto.Service service) {
         Service create = getServiceById(service.getGuid());
         create.setStatus("DELIVERED");
         serviceRepository.save(create);
+        return create;
     }
 
     @Override
-    public void acceptedService(com.trinity.dev.redsos.dto.Service service) {
+    public Service acceptedService(com.trinity.dev.redsos.dto.Service service) {
         Service create = getServiceById(service.getGuid());
         create.setStatus("ACCEPTED");
         serviceRepository.save(create);
+        return create;
     }
 
     @Override
-    public void cancelAttend(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
+    public Service cancelAttend(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
 
         Service create = getServiceById(service.getGuid());
         create.setStatus("NEW");
@@ -130,10 +132,11 @@ public class RedSOSServiceImpl implements RedSOSService {
                 service.getGuid(),
                 person.getGuid()
         );
+        return create;
     }
 
     @Override
-    public void cancelService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
+    public Service cancelService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
 
         Service create = getServiceById(service.getGuid());
         create.setStatus("CANCELLED");
@@ -143,6 +146,7 @@ public class RedSOSServiceImpl implements RedSOSService {
             service.getGuid(),
             person.getGuid()
         );
+        return create;
     }
 
     @Override

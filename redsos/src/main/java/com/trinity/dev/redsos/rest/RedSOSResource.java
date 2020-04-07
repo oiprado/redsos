@@ -31,7 +31,6 @@ public class RedSOSResource {
     
     @RequestMapping(value = "/available-services", method = RequestMethod.GET)
     public ResponseEntity availableServices(@RequestParam("user") String user) {
-
         try {            
             return new ResponseEntity(redSOSService.availableServices(user), HttpStatus.OK);
         } catch (Exception ex) {
@@ -51,13 +50,14 @@ public class RedSOSResource {
     
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody CreateServiceRequest createServiceRequest) {
-
         try {
-            redSOSService.createService(
-                createServiceRequest.getService(),
-                createServiceRequest.getPerson()
-            );
-            return new ResponseEntity(HttpStatus.OK);
+            
+            return new ResponseEntity(
+                redSOSService.createService(
+                    createServiceRequest.getService(),
+                    createServiceRequest.getPerson()
+                ),
+                HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(ex, HttpStatus.BAD_GATEWAY);
         }
@@ -66,13 +66,14 @@ public class RedSOSResource {
     @RequestMapping(value = "/attend", method = RequestMethod.POST)
     public ResponseEntity attend(@RequestBody AttendServiceRequest attendServiceRequest) {
         try {
-            redSOSService.attendService(
-                attendServiceRequest.getService(),
-                attendServiceRequest.getPerson(),
-                attendServiceRequest.getDeliveryDate(),
-                attendServiceRequest.getTimeRange()
-            );
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity(
+                redSOSService.attendService(
+                    attendServiceRequest.getService(),
+                    attendServiceRequest.getPerson(),
+                    attendServiceRequest.getDeliveryDate(),
+                    attendServiceRequest.getTimeRange()
+                ),
+                HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(ex, HttpStatus.BAD_GATEWAY);
         }
@@ -81,8 +82,12 @@ public class RedSOSResource {
     @RequestMapping(value = "/delivered", method = RequestMethod.POST)
     public ResponseEntity delivered(@RequestBody com.trinity.dev.redsos.dto.Service service) {
         try {
-            redSOSService.deliveredService(service);
-            return new ResponseEntity(HttpStatus.OK);
+            
+            return new ResponseEntity(
+                redSOSService.deliveredService(
+                    service
+                ),
+                HttpStatus.OK);
         }catch(Exception ex) {
            return new ResponseEntity(ex, HttpStatus.BAD_REQUEST);
         }
@@ -91,8 +96,11 @@ public class RedSOSResource {
     @RequestMapping(value = "/received", method = RequestMethod.POST)
     public ResponseEntity received(@RequestBody com.trinity.dev.redsos.dto.Service service) {
         try {
-            redSOSService.acceptedService(service);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity(
+                redSOSService.acceptedService(
+                    service
+                )
+                ,HttpStatus.OK);
         }catch(Exception ex) {
            return new ResponseEntity(ex, HttpStatus.BAD_REQUEST);
         }
@@ -101,11 +109,12 @@ public class RedSOSResource {
     @RequestMapping(value = "/cancel-attend", method = RequestMethod.POST)
     public ResponseEntity cancelAttend(@RequestBody CreateServiceRequest createServiceRequest) {
         try {
-            redSOSService.cancelAttend(
-                createServiceRequest.getService(),
-                createServiceRequest.getPerson()
-            );
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity(
+                redSOSService.cancelAttend(
+                    createServiceRequest.getService(),
+                    createServiceRequest.getPerson()
+                )
+                ,HttpStatus.OK);
         }catch(Exception ex) {
            return new ResponseEntity(ex, HttpStatus.BAD_REQUEST);
         }
@@ -114,11 +123,12 @@ public class RedSOSResource {
     @RequestMapping(value = "/cancel-service", method = RequestMethod.POST)
     public ResponseEntity cancelService(@RequestBody CreateServiceRequest createServiceRequest) {
         try {
-            redSOSService.cancelService(
-                createServiceRequest.getService(),
-                createServiceRequest.getPerson()
-            );
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity(
+                redSOSService.cancelService(
+                    createServiceRequest.getService(),
+                    createServiceRequest.getPerson()
+                )
+                ,HttpStatus.OK);
         }catch(Exception ex) {
            return new ResponseEntity(ex, HttpStatus.BAD_REQUEST);
         }

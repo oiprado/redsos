@@ -17,19 +17,19 @@ import java.util.Map;
  */
 public interface RedSOSService {
     
-    public void createService(Service service, Person person);
+    public com.trinity.dev.redsos.domain.Service createService(Service service, Person person);
     
     public List<com.trinity.dev.redsos.domain.Service> availableServices(String user);
     
-    public void attendService(Service service, Person person, Date deliveryDate, String timeRange);
+    public com.trinity.dev.redsos.domain.Service attendService(Service service, Person person, Date deliveryDate, String timeRange);
     
-    public void deliveredService(Service service);
+    public com.trinity.dev.redsos.domain.Service deliveredService(Service service);
     
-    public void acceptedService(Service service);
+    public com.trinity.dev.redsos.domain.Service acceptedService(Service service);
     
-    public void cancelAttend(Service service, Person person);
+    public com.trinity.dev.redsos.domain.Service cancelAttend(Service service, Person person);
     
-    public void cancelService(Service service, Person person);
+    public com.trinity.dev.redsos.domain.Service cancelService(Service service, Person person);
     
     public Iterable<Map<String,Object>> getPermitActions(String serviceGuid, String userGuid);
     
