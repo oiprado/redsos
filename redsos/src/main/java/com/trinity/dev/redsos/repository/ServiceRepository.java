@@ -27,7 +27,9 @@ public interface ServiceRepository extends Neo4jRepository<Service, String>{
     (
         "MATCH(s:Service { status: {status} }) RETURN s\n" +
         "UNION\n" +
-        "MATCH(c:Person { guid: {user} })-[cr:CREATE]->(s:Service) RETURN s"
+        "MATCH(c:Person { guid: {user} })-[cr:CREATE]->(s:Service)\n" +
+        "MATCH(c:Person { guid: {user} })-[cr:ATTEND]->(s:Service)\n" +
+        "RETURN s"
     )
     public List<Service> getServicesByStatus(@Param("status") String status, @Param("user") String user);
     
