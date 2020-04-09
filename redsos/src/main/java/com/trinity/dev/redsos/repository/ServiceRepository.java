@@ -41,11 +41,11 @@ public interface ServiceRepository extends Neo4jRepository<Service, String>{
         "OPTIONAL MATCH (a:Person  { guid: {personGuid} } )-[ar:ATTEND]->(s)\n" +
         "return \n" +
         "CASE \n" +
-        " WHEN count(cr) = 1  THEN true \n" +
+        " WHEN count(cr) = 1 and s.status = 'NEW' THEN true \n" +
         " ELSE false \n" +
         "END AS canCancelService, \n" +
         "CASE\n" +
-        " WHEN count(ar) = 1  THEN true\n" +
+        " WHEN count(ar) = 1 and ar.status = 'ACTIVE' THEN true\n" +
         " ELSE false\n" +
         "END AS canCancelAttend,\n" +
         "CASE\n" +
