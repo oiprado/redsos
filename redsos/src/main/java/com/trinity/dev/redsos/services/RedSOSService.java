@@ -19,6 +19,8 @@ public interface RedSOSService {
     
     public com.trinity.dev.redsos.domain.Service createService(Service service, Person person);
     
+    public com.trinity.dev.redsos.domain.Service getServiceById(String guid);
+    
     public List<com.trinity.dev.redsos.domain.Service> availableServices(String user);
     
     public com.trinity.dev.redsos.domain.Service attendService(Service service, Person person, Date deliveryDate, String timeRange);

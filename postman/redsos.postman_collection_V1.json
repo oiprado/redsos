@@ -8,6 +8,8 @@
 		"a2a0ce17-dfb4-35a0-2b9c-3d8bf70ca1a2",
 		"766a0fcc-a852-5fc2-c985-07b4d0cfa6cf",
 		"9b2f73a2-0bd5-2669-c18f-3589b6995ed4",
+		"e93232df-0a6c-f67a-0c71-45ae19a0c3f2",
+		"722ecd81-1fcc-5764-4e76-5a99fbe85d44",
 		"6e544e08-88d0-6ec2-e627-fb2ef2a46aa2",
 		"68f1b378-d715-05cb-05b7-aace53bce0de"
 	],
@@ -30,23 +32,22 @@
 			],
 			"url": "http://localhost:8082/com.trinity.dev.agora/api/redsos/attend",
 			"queryParams": [],
+			"preRequestScript": null,
 			"pathVariables": {},
 			"pathVariableData": [],
-			"preRequestScript": null,
 			"method": "POST",
-			"collectionId": "5abd21ef-30fa-bafc-a8b9-7846042f43c4",
 			"data": [],
 			"dataMode": "raw",
-			"name": "http://localhost:8082/com.trinity.dev.agora/api/redsos/attend",
-			"description": "",
-			"descriptionFormat": "html",
-			"time": 1586033595922,
 			"version": 2,
-			"responses": [],
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"rawModeData": "{\n\t\"service\": {\n\t\t\"guid\": \"fa9b79a9-4e84-4c0f-885f-eecec683f4a7\"\n\t},\n\t\"person\": {\n\t\t\"guid\": \"7a00a700-b3d4-4790-b37d-59e7bdfa9bae\"\n\t},\n\t\"deliveryDate\": \"2020-03-04T18:25:43.511Z\",\n\t\"timeRange\": \"4:00 PM -5:00 PM\"\n}"
+			"time": 1586284590570,
+			"name": "http://localhost:8082/com.trinity.dev.agora/api/redsos/attend",
+			"description": "",
+			"collectionId": "5abd21ef-30fa-bafc-a8b9-7846042f43c4",
+			"responses": [],
+			"rawModeData": "{\n\t\"service\": {\n\t\t\"guid\": \"82989022-99c2-4cf6-ae78-5c577fdde8e8\"\n\t},\n\t\"person\": {\n\t\t\"guid\": \"05553197-f5b2-44bb-bcb6-8f6fe14ce603\"\n\t},\n\t\"deliveryDate\": \"2020-03-04T18:25:43.511Z\",\n\t\"timeRange\": \"4:00 PM -5:00 PM\"\n}"
 		},
 		{
 			"id": "5830acf6-25e6-75d0-6965-b72bc1998dae",
@@ -144,6 +145,36 @@
 			"rawModeData": "{\n\t\"service\": {\n\t\t\"guid\": \"cad9fe1f-c904-4bd5-a9da-c57b96d4bb55\"\n\t},\n\t\"person\": {\n\t\t\"guid\": \"da5994cd-8176-4325-bf20-718308d0f0db\"\n\t}\n}"
 		},
 		{
+			"id": "722ecd81-1fcc-5764-4e76-5a99fbe85d44",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:8082/com.trinity.dev.agora/api/person/?token=c3QJIeROGLw:APA91bHML_HgZSpIBFik4vrmcGYOIljjRyZZ3rlOzqidW_qVABaiBdGE2XJdtxOp3I8-DDykM2GTxFt3EQAgtGsPLmn1ITKxlqqAm0xZJFbPyi7siMOQQxGMspfmCrf2SzLuXSISxume",
+			"queryParams": [
+				{
+					"key": "token",
+					"value": "c3QJIeROGLw:APA91bHML_HgZSpIBFik4vrmcGYOIljjRyZZ3rlOzqidW_qVABaiBdGE2XJdtxOp3I8-DDykM2GTxFt3EQAgtGsPLmn1ITKxlqqAm0xZJFbPyi7siMOQQxGMspfmCrf2SzLuXSISxume",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1586475476904,
+			"name": "http://localhost:8082/com.trinity.dev.agora/api/redsos/available-services copy",
+			"description": "",
+			"collectionId": "5abd21ef-30fa-bafc-a8b9-7846042f43c4",
+			"responses": []
+		},
+		{
 			"id": "766a0fcc-a852-5fc2-c985-07b4d0cfa6cf",
 			"headers": "Content-Type: application/json\n",
 			"headerData": [
@@ -165,12 +196,12 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1586198624933,
+			"time": 1586482910421,
 			"name": "http://localhost:8082/com.trinity.dev.agora/api/person",
 			"description": "",
 			"collectionId": "5abd21ef-30fa-bafc-a8b9-7846042f43c4",
 			"responses": [],
-			"rawModeData": "{\n    \"profileName\": \"eprado\",\n    \"name\": \"Emmanuel Prado Ninco\",\n    \"mail\":\"oiprado@gmail.com\",\n    \"address\": \"Calle 1 # 3-46 Yumbo\",\n    \"active\": true\n}"
+			"rawModeData": "{\n    \"profileName\": \"eprado\",\n    \"name\": \"Emmnuel Prado Ninco\",\n    \"mail\":\"eprani@gmail.com\",\n    \"address\": \"Calle 1 # 3-46 Yumbo\",\n    \"active\": true,\n    \"device\": {\n    \t\"platform\": \"iphone\",\n    \t\"token\": \"362bb9d3-e209-4a17-a711-6aac87fbf3f4\"\n    }\n}"
 		},
 		{
 			"id": "9b2f73a2-0bd5-2669-c18f-3589b6995ed4",
@@ -225,12 +256,42 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1586231067406,
+			"time": 1586284589777,
 			"name": "http://localhost:8082/com.trinity.dev.agora/api/redsos/create",
 			"description": "",
 			"collectionId": "5abd21ef-30fa-bafc-a8b9-7846042f43c4",
 			"responses": [],
-			"rawModeData": "{\n\t\"service\": {\n\t\t\"message\": \"Servicio Nuevo\",\n\t    \"description\": \"Este es un ejemplo de otro usuario\",\n\t    \"publishedDate\": \"2020-03-04T18:25:43.511Z\",\n\t    \"type\": \"ALIMENTO\",\n\t    \"location\": \"3.585003, -76.498692\",\n\t    \"tags\": \"AyudaHumanitaria, SOS, Yumbo\",\n\t    \"products\": []\n\t},\n\t\"person\": {\n\t\t\"guid\": \"7a00a700-b3d4-4790-b37d-59e7bdfa9bae\"\n\t}\n}"
+			"rawModeData": "{\n\t\"service\": {\n\t\t\"message\": \"Servicio Nuevo eprado\",\n\t    \"description\": \"Este es un ejemplo de otro usuario\",\n\t    \"publishedDate\": \"2020-03-04T18:25:43.511Z\",\n\t    \"type\": \"ALIMENTO\",\n\t    \"location\": \"3.585003, -76.498692\",\n\t    \"tags\": \"AyudaHumanitaria, SOS, Yumbo\",\n\t    \"products\": []\n\t},\n\t\"person\": {\n\t\t\"guid\": \"1fe25541-057c-483b-8e5c-c1ff747ecb1b\"\n\t}\n}"
+		},
+		{
+			"id": "e93232df-0a6c-f67a-0c71-45ae19a0c3f2",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:8082/com.trinity.dev.agora/api/redsos/services?guid=89d44c6c-438b-4eca-85c2-7857db89ae0d",
+			"queryParams": [
+				{
+					"key": "guid",
+					"value": "89d44c6c-438b-4eca-85c2-7857db89ae0d",
+					"equals": true,
+					"description": "",
+					"enabled": true
+				}
+			],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1586486215497,
+			"name": "http://localhost:8082/com.trinity.dev.agora/api/redsos/service",
+			"description": "",
+			"collectionId": "5abd21ef-30fa-bafc-a8b9-7846042f43c4",
+			"responses": []
 		}
 	]
 }

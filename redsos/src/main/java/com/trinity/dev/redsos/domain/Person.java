@@ -5,8 +5,9 @@
  */
 package com.trinity.dev.redsos.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.Index;
@@ -43,6 +44,9 @@ public class Person {
 //    @JsonIgnoreProperties("endNode")
     @Relationship(type = "ATTEND")
     private Set<Service> attendServices;
+
+    @Relationship(type = "USE", direction = Relationship.OUTGOING)
+    private List<Device> useDevices = new ArrayList<>();
 
     public Person() {
     }
@@ -109,6 +113,14 @@ public class Person {
 
     public void setAttendServices(Set<Service> attendServices) {
         this.attendServices = attendServices;
+    }
+
+    public List<Device> getUseDevices() {
+        return useDevices;
+    }
+
+    public void setUseDevices(List<Device> useDevices) {
+        this.useDevices = useDevices;
     }
 
 }

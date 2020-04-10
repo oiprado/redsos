@@ -21,7 +21,11 @@ security:
       userAuthorizationUri: http://localhost:8081/com.trinity.dev.auth.${spring.profiles.active}/oauth/authorize
     resource:
       userInfoUri: http://localhost:8081/com.trinity.dev.auth.${spring.profiles.active}/api/user/userInfo    
-    
+google:
+  application:
+    credentials: /home/oiprado/google/crendentials/service-account-file.json   
+  database:
+    url: https://redsos-2020.firebaseio.com
 #---
 #spring:
 #  profiles: developer # test server configuration

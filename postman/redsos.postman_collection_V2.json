@@ -41,7 +41,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"service\": {\n\t\t\"guid\": \"fa9b79a9-4e84-4c0f-885f-eecec683f4a7\"\n\t},\n\t\"person\": {\n\t\t\"guid\": \"7a00a700-b3d4-4790-b37d-59e7bdfa9bae\"\n\t},\n\t\"deliveryDate\": \"2020-03-04T18:25:43.511Z\",\n\t\"timeRange\": \"4:00 PM -5:00 PM\"\n}"
+					"raw": "{\n\t\"service\": {\n\t\t\"guid\": \"82989022-99c2-4cf6-ae78-5c577fdde8e8\"\n\t},\n\t\"person\": {\n\t\t\"guid\": \"05553197-f5b2-44bb-bcb6-8f6fe14ce603\"\n\t},\n\t\"deliveryDate\": \"2020-03-04T18:25:43.511Z\",\n\t\"timeRange\": \"4:00 PM -5:00 PM\"\n}"
 				},
 				"description": ""
 			},
@@ -61,7 +61,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"service\": {\n\t\t\"message\": \"Servicio Nuevo\",\n\t    \"description\": \"Este es un ejemplo de otro usuario\",\n\t    \"publishedDate\": \"2020-03-04T18:25:43.511Z\",\n\t    \"type\": \"ALIMENTO\",\n\t    \"location\": \"3.585003, -76.498692\",\n\t    \"tags\": \"AyudaHumanitaria, SOS, Yumbo\",\n\t    \"products\": []\n\t},\n\t\"person\": {\n\t\t\"guid\": \"7a00a700-b3d4-4790-b37d-59e7bdfa9bae\"\n\t}\n}"
+					"raw": "{\n\t\"service\": {\n\t\t\"message\": \"Servicio Nuevo eprado\",\n\t    \"description\": \"Este es un ejemplo de otro usuario\",\n\t    \"publishedDate\": \"2020-03-04T18:25:43.511Z\",\n\t    \"type\": \"ALIMENTO\",\n\t    \"location\": \"3.585003, -76.498692\",\n\t    \"tags\": \"AyudaHumanitaria, SOS, Yumbo\",\n\t    \"products\": []\n\t},\n\t\"person\": {\n\t\t\"guid\": \"1fe25541-057c-483b-8e5c-c1ff747ecb1b\"\n\t}\n}"
 				},
 				"description": ""
 			},
@@ -81,7 +81,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"profileName\": \"eprado\",\n    \"name\": \"Emmanuel Prado Ninco\",\n    \"mail\":\"oiprado@gmail.com\",\n    \"address\": \"Calle 1 # 3-46 Yumbo\",\n    \"active\": true\n}"
+					"raw": "{\n    \"profileName\": \"eprado\",\n    \"name\": \"Emmnuel Prado Ninco\",\n    \"mail\":\"eprani@gmail.com\",\n    \"address\": \"Calle 1 # 3-46 Yumbo\",\n    \"active\": true,\n    \"device\": {\n    \t\"platform\": \"iphone\",\n    \t\"token\": \"362bb9d3-e209-4a17-a711-6aac87fbf3f4\"\n    }\n}"
 				},
 				"description": ""
 			},
@@ -107,6 +107,72 @@
 						{
 							"key": "user",
 							"value": "7a00a700-b3d4-4790-b37d-59e7bdfa9bae",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8082/com.trinity.dev.agora/api/redsos/service",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8082/com.trinity.dev.agora/api/redsos/services?guid=89d44c6c-438b-4eca-85c2-7857db89ae0d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"com.trinity.dev.agora",
+						"api",
+						"redsos",
+						"services"
+					],
+					"query": [
+						{
+							"key": "guid",
+							"value": "89d44c6c-438b-4eca-85c2-7857db89ae0d",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8082/com.trinity.dev.agora/api/redsos/available-services copy",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8082/com.trinity.dev.agora/api/person/?token=c3QJIeROGLw:APA91bHML_HgZSpIBFik4vrmcGYOIljjRyZZ3rlOzqidW_qVABaiBdGE2XJdtxOp3I8-DDykM2GTxFt3EQAgtGsPLmn1ITKxlqqAm0xZJFbPyi7siMOQQxGMspfmCrf2SzLuXSISxume",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"com.trinity.dev.agora",
+						"api",
+						"person",
+						""
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "c3QJIeROGLw:APA91bHML_HgZSpIBFik4vrmcGYOIljjRyZZ3rlOzqidW_qVABaiBdGE2XJdtxOp3I8-DDykM2GTxFt3EQAgtGsPLmn1ITKxlqqAm0xZJFbPyi7siMOQQxGMspfmCrf2SzLuXSISxume",
 							"equals": true,
 							"description": ""
 						}

@@ -5,6 +5,7 @@
  */
 package com.trinity.dev.redsos.rest;
 
+import com.trinity.dev.redsos.component.NotificationComponent;
 import com.trinity.dev.redsos.dto.Person;
 import com.trinity.dev.redsos.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -25,6 +27,8 @@ public class PersonResource {
     
     @Autowired
     private PersonService personService;
+    @Autowired
+    private NotificationComponent notificationComponent;
     
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Person person) {
@@ -33,6 +37,18 @@ public class PersonResource {
         }catch(Exception ex) {
             return new ResponseEntity(ex, HttpStatus.BAD_REQUEST);
         }
+    }
+    
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity sendMessage(@RequestParam("token") String token){
+        notificationComponent.send(token, "Comida para hoy. Gracias", "Hola soy Oscar necesito yuda", "1");
+        return new ResponseEntity(HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "batch" ,method = RequestMethod.GET)
+    public ResponseEntity batch(){
+        notificationComponent.sendBatch("Comida para hoy. Gracias", "Hola soy Oscar necesito yuda", "1");
+        return new ResponseEntity(HttpStatus.OK);
     }
     
 }

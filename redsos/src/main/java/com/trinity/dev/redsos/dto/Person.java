@@ -13,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  *
  * @author oiprado
  */
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "guid",
@@ -22,7 +21,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "mail",
     "name",
     "address",
-    "active"
+    "active",
+    "device"
 })
 public class Person {
 
@@ -38,6 +38,8 @@ public class Person {
     private String address;
     @JsonProperty("active")
     private boolean active;
+    @JsonProperty("device")
+    private Device device;
 
     public String getGuid() {
         return guid;
@@ -85,6 +87,14 @@ public class Person {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Device getDevice() {
+        return device;
+    }
+
+    public void setDevice(Device device) {
+        this.device = device;
     }
 
 }

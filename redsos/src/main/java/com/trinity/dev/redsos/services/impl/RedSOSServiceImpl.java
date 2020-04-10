@@ -5,6 +5,7 @@
  */
 package com.trinity.dev.redsos.services.impl;
 
+import com.trinity.dev.redsos.component.NotificationComponent;
 import com.trinity.dev.redsos.domain.Person;
 import com.trinity.dev.redsos.domain.Product;
 import com.trinity.dev.redsos.domain.Service;
@@ -19,6 +20,7 @@ import com.trinity.dev.redsos.repository.relationship.CreateRelationshipReposito
 import com.trinity.dev.redsos.repository.relationship.ProductRelationshipRepository;
 import com.trinity.dev.redsos.services.RedSOSService;
 import com.trinity.dev.redsos.util.Util;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +47,9 @@ public class RedSOSServiceImpl implements RedSOSService {
     private AttendRelationshipRepository attendRelationshipRepository;
     @Autowired
     private CreateRelationshipRepository createRelationshipRepository;
+    @Autowired
+    private NotificationComponent notificationComponent;
+    
     @Autowired
     private Util util;
 
@@ -73,6 +78,12 @@ public class RedSOSServiceImpl implements RedSOSService {
             });
         }
         
+        sendBatchMessage(
+            String.format("Hola, soy %s, necesito de tu ayuda.", createBy.getName()), 
+            create.getMessage(),
+            create.getGuid()
+        );
+        
         return create;
     }
 
@@ -94,6 +105,16 @@ public class RedSOSServiceImpl implements RedSOSService {
         create.setStatus("ATTENDED");
 
         serviceRepository.save(create);
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+        
+        sendMessage(
+            "token", 
+            String.format("Hola, soy %s, quiero ayudarte.", attendBy.getName()), 
+            String.format("Te llevo tu solicitud a tu casa el día %s entre %s.", sdf.format(deliveryDate), timeRange), 
+            service.getGuid()
+        );
+        
         return create;
     }
 
@@ -101,7 +122,7 @@ public class RedSOSServiceImpl implements RedSOSService {
         return util.getPersonByGuid(guid);
     }
 
-    private Service getServiceById(String guid) {
+    public Service getServiceById(String guid) {
         return util.getServiceByGuid(guid);
     }
 
@@ -110,14 +131,28 @@ public class RedSOSServiceImpl implements RedSOSService {
         Service create = getServiceById(service.getGuid());
         create.setStatus("DELIVERED");
         serviceRepository.save(create);
+        sendMessage(
+            "token", 
+            String.format("Hola de nuevo."), 
+            String.format("Espero poder aliviar un poco tu necesidad con esta atención"), 
+            service.getGuid()
+        );
         return create;
     }
 
     @Override
     public Service acceptedService(com.trinity.dev.redsos.dto.Service service) {
         Service create = getServiceById(service.getGuid());
+        
         create.setStatus("ACCEPTED");
         serviceRepository.save(create);
+        
+        sendMessage(
+            "token", 
+            String.format("Hola a TODOS."), 
+            String.format("Me alegra mucho decir que mi solicitud fue atendida. GRACIAS."), 
+            service.getGuid()
+        );
         return create;
     }
 
@@ -128,10 +163,19 @@ public class RedSOSServiceImpl implements RedSOSService {
         create.setStatus("NEW");
 
         serviceRepository.save(create);
+        
         attendRelationshipRepository.cancelRelationship(
                 service.getGuid(),
                 person.getGuid()
         );
+        
+        sendMessage(
+            "token", 
+            String.format("Hola de nuevo."), 
+            String.format("Lamento decirte que no esposible cumplir con esta tarea."), 
+            service.getGuid()
+        );
+        
         return create;
     }
 
@@ -139,13 +183,22 @@ public class RedSOSServiceImpl implements RedSOSService {
     public Service cancelService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
 
         Service create = getServiceById(service.getGuid());
+        Person user = getPersonById(person.getName());
         create.setStatus("CANCELLED");
 
         serviceRepository.save(create);
+        
         createRelationshipRepository.cancelRelationship(
             service.getGuid(),
             person.getGuid()
         );
+        
+        sendBatchMessage(
+            String.format("Hola a todos soy %s", user.getName()),
+            "Estoy muy agradecido con su solidaridad, es éste momento acabo de cancelar mi solicitud", 
+            create.getGuid()
+        );
+        
         return create;
     }
 
@@ -171,6 +224,23 @@ public class RedSOSServiceImpl implements RedSOSService {
     @Override
     public Map<String,Object> getPermitActions(String serviceGuid, String userGuid) {
         return serviceRepository.getPermitActions(serviceGuid, userGuid).iterator().next();
+    }
+    
+    private void sendMessage(String token, String title, String body, String guid) {
+        notificationComponent.send(
+            token, 
+            body, 
+            title, 
+            guid
+        );
+    }
+    
+    private void sendBatchMessage(String title, String body, String guid) {
+        notificationComponent.sendBatch(
+            body,
+            title,
+            guid
+        );
     }
 
 }
