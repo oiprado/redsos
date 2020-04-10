@@ -28,9 +28,11 @@ public interface ServiceRepository extends Neo4jRepository<Service, String>{
         "MATCH(s:Service { status: {status} }) RETURN s\n" +
         "UNION\n" +
         "MATCH(c:Person { guid: {user} })-[cr:CREATE]->(s:Service)\n" +
+        "WHERE s.status <> 'ACCEPTED' AND s.status <> 'CANCELLED' \n" +
         "RETURN s \n" +
         "UNION\n" +
         "MATCH(c:Person { guid: {user} })-[cr:ATTEND]->(s:Service)\n" +
+        "WHERE s.status <> 'ACCEPTED' AND s.status <> 'CANCELLED' \n" +
         "RETURN s"
     )
     public List<Service> getServicesByStatus(@Param("status") String status, @Param("user") String user);
@@ -47,7 +49,7 @@ public interface ServiceRepository extends Neo4jRepository<Service, String>{
         " ELSE false \n" +
         "END AS canCancelService, \n" +
         "CASE\n" +
-        " WHEN count(ar) = 1 and ar.status = 'ACTIVE' THEN true\n" +
+        " WHEN count(ar) = 1 and ar.status = 'ACTIVE' and s.status <> 'DELIVERED' THEN true\n" +
         " ELSE false\n" +
         "END AS canCancelAttend,\n" +
         "CASE\n" +
@@ -55,11 +57,11 @@ public interface ServiceRepository extends Neo4jRepository<Service, String>{
         " ELSE false\n" +
         "END AS canAttended,\n" +
         "CASE\n" +
-        " WHEN count(ar) = 1 OR ar.status = 'ACTIVE'  THEN true\n" +
+        " WHEN (count(ar) = 1 and s.status <> 'DELIVERED') THEN true\n" +
         " ELSE false\n" +
         "END AS canDeliver,\n" +
         "CASE\n" +
-        " WHEN s.status = 'DELIVERED' THEN true\n" +
+        " WHEN count(cr) = 1 and s.status = 'DELIVERED' THEN true\n" +
         " ELSE false\n" +
         "END AS canAcceptDelivery"
     )
