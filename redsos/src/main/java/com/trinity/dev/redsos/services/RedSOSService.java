@@ -19,7 +19,7 @@ public interface RedSOSService {
     
     public com.trinity.dev.redsos.domain.Service createService(Service service, Person person);
     
-    public com.trinity.dev.redsos.domain.Service getServiceById(String guid);
+    public com.trinity.dev.redsos.domain.Service getServiceWithChilds(String guid);
     
     public List<com.trinity.dev.redsos.domain.Service> availableServices(String user);
     

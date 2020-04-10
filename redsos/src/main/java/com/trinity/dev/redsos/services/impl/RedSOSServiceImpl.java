@@ -124,9 +124,26 @@ public class RedSOSServiceImpl implements RedSOSService {
     private Person getPersonById(String guid) {
         return util.getPersonByGuid(guid);
     }
-
+    
     @Override
-    public Service getServiceById(String guid) {
+    public Service getServiceWithChilds(String guid) {
+    
+        Service service = getServiceById(guid);
+        
+        service.setAttendPersons(
+            personRepository.getAttendPersonByService(service.getGuid())
+        );
+
+        service.setCreatePersons(
+            personRepository.getCreatePersonByService(service.getGuid())
+        );
+        
+        return service;
+        
+    }
+
+    
+    private Service getServiceById(String guid) {
         return util.getServiceByGuid(guid);
     }
 
@@ -191,7 +208,7 @@ public class RedSOSServiceImpl implements RedSOSService {
     public Service cancelService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
 
         Service create = getServiceById(service.getGuid());
-        Person user = getPersonById(person.getName());
+        Person user = getPersonById(person.getGuid());
         create.setStatus("CANCELLED");
 
         serviceRepository.save(create);

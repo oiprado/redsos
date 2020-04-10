@@ -42,7 +42,7 @@ public class RedSOSResource {
     @RequestMapping(value = "/services", method = RequestMethod.GET)
     public ResponseEntity services(@RequestParam("guid") String guid) {
         try {            
-            return new ResponseEntity(redSOSService.getServiceById(guid), HttpStatus.OK);
+            return new ResponseEntity(redSOSService.getServiceWithChilds(guid), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity(ex, HttpStatus.BAD_GATEWAY);
         }

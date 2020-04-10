@@ -32,7 +32,7 @@ public interface PersonRepository extends Neo4jRepository<Person, String> {
     
     public Person findOneByGuid(String guid);
     
-    @Query("MATCH(p:Person { guid: {guid} })-[r:USE]->(d:Device) RETURN p")
+    @Query("MATCH(p:Person { guid: {guid} }) RETURN p")
     public Person findByGuid(@Param("guid") String guid);
     
     @Query("MATCH(p:Person { guid: {guid} }) RETURN p")
