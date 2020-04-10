@@ -40,6 +40,7 @@ public class PersonServiceImpl implements PersonService {
         
         Person exist = personRepository.findByProfileName(person.getProfileName());
         Device device = util.convertTo(person.getDevice(), Device.class);
+        device.setGuid(UUID.randomUUID().toString());
         
         if(exist != null) {
             
@@ -61,7 +62,6 @@ public class PersonServiceImpl implements PersonService {
     }
     
     private void linkDivice(Person person, Device device) {
-        device.setGuid(UUID.randomUUID().toString());
         deviceRelationshipRepository.save(new UseDeviceRelarionship(person, device));
     }
     
