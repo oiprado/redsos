@@ -27,7 +27,7 @@ import java.util.Map;
     "products",
     "delivery"
 })
-public class ServiceResponse extends Service {
+public class ServiceResponse extends com.trinity.dev.redsos.domain.Service {
 
     private Map<String, Object> delivery;
 
