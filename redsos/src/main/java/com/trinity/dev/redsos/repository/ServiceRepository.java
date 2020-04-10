@@ -49,11 +49,11 @@ public interface ServiceRepository extends Neo4jRepository<Service, String>{
         " ELSE false\n" +
         "END AS canCancelAttend,\n" +
         "CASE\n" +
-        " WHEN count(ar) > 1 OR ar.status = 'ACTIVE'  THEN true\n" +
+        " WHEN count(ar) = 0 OR ar.status = 'ACTIVE'  THEN true\n" +
         " ELSE false\n" +
         "END AS canAttended,\n" +
         "CASE\n" +
-        " WHEN count(ar) > 1 OR ar.status = 'ACTIVE'  THEN true\n" +
+        " WHEN count(ar) = 1 OR ar.status = 'ACTIVE'  THEN true\n" +
         " ELSE false\n" +
         "END AS canDeliver,\n" +
         "CASE\n" +
