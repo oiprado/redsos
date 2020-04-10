@@ -100,8 +100,6 @@ public class RedSOSServiceImpl implements RedSOSService {
 
         Set<Person> creates = personRepository.getCreatePersonByService(service.getGuid());
 
-        List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
-
         create.setStatus("ATTENDED");
 
         serviceRepository.save(create);
@@ -118,12 +116,16 @@ public class RedSOSServiceImpl implements RedSOSService {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
 
-        sendMessage(
-                devices,
-                String.format("Hola, soy %s, quiero ayudarte.", attendBy.getName()),
-                String.format("Te llevo tu solicitud a tu casa el día %s entre %s.", sdf.format(deliveryDate), timeRange),
-                service.getGuid()
-        );
+        if (creates.iterator().hasNext()) {
+            List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
+
+            sendMessage(
+                    devices,
+                    String.format("Hola, soy %s, quiero ayudarte.", attendBy.getName()),
+                    String.format("Te llevo tu solicitud a tu casa el día %s entre %s.", sdf.format(deliveryDate), timeRange),
+                    service.getGuid()
+            );
+        }
 
         return create;
     }
@@ -170,16 +172,20 @@ public class RedSOSServiceImpl implements RedSOSService {
 
         Set<Person> creates = personRepository.getCreatePersonByService(service.getGuid());
 
-        List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
-
         create.setStatus("DELIVERED");
         serviceRepository.save(create);
-        sendMessage(
-                devices,
-                String.format("Hola de nuevo."),
-                String.format("Espero poder aliviar un poco tu necesidad con esta atención"),
-                service.getGuid()
-        );
+
+        if (creates.iterator().hasNext()) {
+            List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
+
+            sendMessage(
+                    devices,
+                    String.format("Hola de nuevo."),
+                    String.format("Espero poder aliviar un poco tu necesidad con esta atención"),
+                    service.getGuid()
+            );
+        }
+
         return create;
     }
 
@@ -192,14 +198,17 @@ public class RedSOSServiceImpl implements RedSOSService {
 
         Set<Person> creates = personRepository.getAttendPersonByService(service.getGuid());
 
-        List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
+        if (creates.iterator().hasNext()) {
+            List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
 
-        sendMessage(
-                devices,
-                String.format("Hola a TODOS."),
-                String.format("Me alegra mucho decir que mi solicitud fue atendida. GRACIAS."),
-                service.getGuid()
-        );
+            sendMessage(
+                    devices,
+                    String.format("Hola a TODOS."),
+                    String.format("Me alegra mucho decir que mi solicitud fue atendida. GRACIAS."),
+                    service.getGuid()
+            );
+        }
+
         return create;
     }
 
