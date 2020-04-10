@@ -100,6 +100,12 @@ public class RedSOSServiceImpl implements RedSOSService {
         
         List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
         
+        
+
+        create.setStatus("ATTENDED");
+
+        serviceRepository.save(create);
+        
         attendRelationshipRepository.save(
                 new AttendRelationship(
                         UUID.randomUUID(),
@@ -109,10 +115,6 @@ public class RedSOSServiceImpl implements RedSOSService {
                         timeRange
                 )
         );
-
-        create.setStatus("ATTENDED");
-
-        serviceRepository.save(create);
         
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
         
