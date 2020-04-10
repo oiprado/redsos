@@ -13,6 +13,7 @@ import com.trinity.dev.redsos.domain.Service;
 import com.trinity.dev.redsos.domain.relationship.AttendRelationship;
 import com.trinity.dev.redsos.domain.relationship.CreateRelationship;
 import com.trinity.dev.redsos.domain.relationship.ProductRelationship;
+import com.trinity.dev.redsos.dto.ServiceResponse;
 import com.trinity.dev.redsos.repository.PersonRepository;
 import com.trinity.dev.redsos.repository.ProductRepository;
 import com.trinity.dev.redsos.repository.ServiceRepository;
@@ -28,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.beans.BeanUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -52,7 +54,7 @@ public class RedSOSServiceImpl implements RedSOSService {
     private CreateRelationshipRepository createRelationshipRepository;
     @Autowired
     private NotificationComponent notificationComponent;
-    
+
     @Autowired
     private Util util;
 
@@ -80,30 +82,30 @@ public class RedSOSServiceImpl implements RedSOSService {
                 productRelationshipRepository.save(new ProductRelationship(create, item));
             });
         }
-        
+
         sendBatchMessage(
-            String.format("Hola, soy %s, necesito de tu ayuda.", createBy.getName()), 
-            create.getMessage(),
-            create.getGuid()
+                String.format("Hola, soy %s, necesito de tu ayuda.", createBy.getName()),
+                create.getMessage(),
+                create.getGuid()
         );
-        
+
         return create;
     }
 
     @Override
     public Service attendService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person, Date deliveryDate, String timeRange) {
         Service create = getServiceById(service.getGuid());
-        
+
         Person attendBy = getPersonById(person.getGuid());
-        
+
         Set<Person> creates = personRepository.getCreatePersonByService(service.getGuid());
-        
+
         List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
-        
+
         create.setStatus("ATTENDED");
 
         serviceRepository.save(create);
-        
+
         attendRelationshipRepository.save(
                 new AttendRelationship(
                         UUID.randomUUID(),
@@ -113,28 +115,28 @@ public class RedSOSServiceImpl implements RedSOSService {
                         timeRange
                 )
         );
-        
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-        
+
         sendMessage(
-            devices, 
-            String.format("Hola, soy %s, quiero ayudarte.", attendBy.getName()), 
-            String.format("Te llevo tu solicitud a tu casa el día %s entre %s.", sdf.format(deliveryDate), timeRange), 
-            service.getGuid()
+                devices,
+                String.format("Hola, soy %s, quiero ayudarte.", attendBy.getName()),
+                String.format("Te llevo tu solicitud a tu casa el día %s entre %s.", sdf.format(deliveryDate), timeRange),
+                service.getGuid()
         );
-        
+
         return create;
     }
 
     private Person getPersonById(String guid) {
         return util.getPersonByGuid(guid);
     }
-    
+
     @Override
-    public Service getServiceWithChilds(String guid) {
-    
+    public ServiceResponse getServiceWithChilds(String guid) {
+
         Service service = getServiceById(guid);
-        
+
         service.setAttendPersons(
             personRepository.getAttendPersonByService(service.getGuid())
         );
@@ -142,9 +144,20 @@ public class RedSOSServiceImpl implements RedSOSService {
         service.setCreatePersons(
             personRepository.getCreatePersonByService(service.getGuid())
         );
+
+        Iterable<Map<String, Object>> at = attendRelationshipRepository.getRelationship(guid);
+
+        ServiceResponse response = new ServiceResponse();
+
+        BeanUtils.copyProperties(service, response);
+
+        if(at.iterator().hasNext()) {
+            response.setDelivery(at.iterator().next());
+        }
         
-        return service;
-        
+
+        return response;
+
     }
 
     private Service getServiceById(String guid) {
@@ -153,20 +166,20 @@ public class RedSOSServiceImpl implements RedSOSService {
 
     @Override
     public Service deliveredService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
-        
+
         Service create = getServiceById(service.getGuid());
-        
+
         Set<Person> creates = personRepository.getCreatePersonByService(service.getGuid());
-        
+
         List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
-        
+
         create.setStatus("DELIVERED");
         serviceRepository.save(create);
         sendMessage(
-            devices, 
-            String.format("Hola de nuevo."), 
-            String.format("Espero poder aliviar un poco tu necesidad con esta atención"), 
-            service.getGuid()
+                devices,
+                String.format("Hola de nuevo."),
+                String.format("Espero poder aliviar un poco tu necesidad con esta atención"),
+                service.getGuid()
         );
         return create;
     }
@@ -174,19 +187,19 @@ public class RedSOSServiceImpl implements RedSOSService {
     @Override
     public Service acceptedService(com.trinity.dev.redsos.dto.Service service) {
         Service create = getServiceById(service.getGuid());
-        
+
         create.setStatus("ACCEPTED");
         serviceRepository.save(create);
-        
+
         Set<Person> creates = personRepository.getAttendPersonByService(service.getGuid());
-        
+
         List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
-        
+
         sendMessage(
-            devices,
-            String.format("Hola a TODOS."), 
-            String.format("Me alegra mucho decir que mi solicitud fue atendida. GRACIAS."), 
-            service.getGuid()
+                devices,
+                String.format("Hola a TODOS."),
+                String.format("Me alegra mucho decir que mi solicitud fue atendida. GRACIAS."),
+                service.getGuid()
         );
         return create;
     }
@@ -195,22 +208,22 @@ public class RedSOSServiceImpl implements RedSOSService {
     public Service cancelAttend(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
 
         Service create = getServiceById(service.getGuid());
-        
+
         create.setStatus("NEW");
 
         serviceRepository.save(create);
-        
+
         attendRelationshipRepository.cancelRelationship(
                 service.getGuid(),
                 person.getGuid()
         );
-        
-        sendBatchMessage( 
-            String.format("Hola de nuevo."), 
-            String.format("Lamento decirte que no es posible cumplir con esta tarea."), 
-            service.getGuid()
+
+        sendBatchMessage(
+                String.format("Hola de nuevo."),
+                String.format("Lamento decirte que no es posible cumplir con esta tarea."),
+                service.getGuid()
         );
-        
+
         return create;
     }
 
@@ -222,23 +235,23 @@ public class RedSOSServiceImpl implements RedSOSService {
         create.setStatus("CANCELLED");
 
         serviceRepository.save(create);
-        
+
         createRelationshipRepository.cancelRelationship(
-            service.getGuid(),
-            person.getGuid()
+                service.getGuid(),
+                person.getGuid()
         );
-        
+
         Set<Person> creates = personRepository.getAttendPersonByService(service.getGuid());
-        
+
         List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
-        
+
         sendMessage(
-            devices,
-            String.format("Hola soy %s", user.getName()),
-            "Estoy muy agradecido con su solidaridad, en éste momento acabo de cancelar mi solicitud. Gracias", 
-            create.getGuid()
+                devices,
+                String.format("Hola soy %s", user.getName()),
+                "Estoy muy agradecido con su solidaridad, en éste momento acabo de cancelar mi solicitud. Gracias",
+                create.getGuid()
         );
-        
+
         return create;
     }
 
@@ -248,42 +261,42 @@ public class RedSOSServiceImpl implements RedSOSService {
         List<Service> services = serviceRepository.getServicesByStatus("NEW", user);
 
         services.forEach(service -> {
-                service.setAttendPersons(
+            service.setAttendPersons(
                     personRepository.getAttendPersonByService(service.getGuid())
-                );
+            );
 
-                service.setCreatePersons(
+            service.setCreatePersons(
                     personRepository.getCreatePersonByService(service.getGuid())
-                );
-            }
+            );
+        }
         );
 
         return services;
     }
 
     @Override
-    public Map<String,Object> getPermitActions(String serviceGuid, String userGuid) {
+    public Map<String, Object> getPermitActions(String serviceGuid, String userGuid) {
         return serviceRepository.getPermitActions(serviceGuid, userGuid).iterator().next();
     }
-    
+
     private void sendMessage(List<String> tokens, String title, String body, String guid) {
         notificationComponent.send(
-            tokens, 
-            body, 
-            title, 
-            guid
+                tokens,
+                body,
+                title,
+                guid
         );
     }
-    
+
     private void sendBatchMessage(String title, String body, String guid) {
         notificationComponent.sendBatch(
-            body,
-            title,
-            guid
+                body,
+                title,
+                guid
         );
     }
-    
-    private List<Device> getDevices(String profileName){
+
+    private List<Device> getDevices(String profileName) {
         return personRepository.getDevicesByProfile(profileName);
     }
 

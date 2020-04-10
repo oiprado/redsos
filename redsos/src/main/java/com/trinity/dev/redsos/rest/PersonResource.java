@@ -41,19 +41,19 @@ public class PersonResource {
         }
     }
     
-    @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity sendMessage(@RequestParam("token") String token){
-        List<String> tokens = new ArrayList<>();
-        tokens.add(token);
-        
-        notificationComponent.send(tokens, "Comida para hoy. Gracias", "Hola soy Oscar necesito yuda", "1");
-        return new ResponseEntity(HttpStatus.OK);
-    }
-    
-    @RequestMapping(value = "batch" ,method = RequestMethod.GET)
-    public ResponseEntity batch(){
-        notificationComponent.sendBatch("Comida para hoy. Gracias", "Hola soy Oscar necesito yuda", "1");
-        return new ResponseEntity(HttpStatus.OK);
-    }
+//    @RequestMapping(method = RequestMethod.GET)
+//    public ResponseEntity sendMessage(@RequestParam("token") String token){
+//        List<String> tokens = new ArrayList<>();
+//        tokens.add(token);
+//        
+//        notificationComponent.send(tokens, "Comida para hoy. Gracias", "Hola soy Oscar necesito yuda", "1");
+//        return new ResponseEntity(HttpStatus.OK);
+//    }
+//    
+//    @RequestMapping(value = "batch" ,method = RequestMethod.GET)
+//    public ResponseEntity batch(){
+//        notificationComponent.sendBatch("Comida para hoy. Gracias", "Hola soy Oscar necesito yuda", "1");
+//        return new ResponseEntity(HttpStatus.OK);
+//    }
     
 }

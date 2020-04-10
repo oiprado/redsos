@@ -7,6 +7,7 @@ package com.trinity.dev.redsos.services;
 
 import com.trinity.dev.redsos.dto.Person;
 import com.trinity.dev.redsos.dto.Service;
+import com.trinity.dev.redsos.dto.ServiceResponse;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ public interface RedSOSService {
     
     public com.trinity.dev.redsos.domain.Service createService(Service service, Person person);
     
-    public com.trinity.dev.redsos.domain.Service getServiceWithChilds(String guid);
+    public ServiceResponse getServiceWithChilds(String guid);
     
     public List<com.trinity.dev.redsos.domain.Service> availableServices(String user);
     

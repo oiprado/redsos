@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ServiceRepository extends Neo4jRepository<Service, String>{
     
-    @Query("MATCH(p:Service { guid: {guid} }) RETURN p")
+    @Query("MATCH(s:Service { guid: {guid} }) RETURN s")
     public Service findByGuid(@Param("guid") String guid);
     
     @Query
@@ -51,7 +51,7 @@ public interface ServiceRepository extends Neo4jRepository<Service, String>{
         " ELSE false\n" +
         "END AS canCancelAttend,\n" +
         "CASE\n" +
-        " WHEN count(ar) = 0 OR ar.status = 'ACTIVE'  THEN true\n" +
+        " WHEN (count(ar) = 0 and count(cr) = 0) THEN true\n" +
         " ELSE false\n" +
         "END AS canAttended,\n" +
         "CASE\n" +

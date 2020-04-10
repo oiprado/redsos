@@ -42,7 +42,7 @@ public class Service {
 //    @JsonIgnoreProperties("endNode")
     @Relationship(type = "HAS")
     private Set<Product> hasProducts;
-    @Relationship(type = "ATTEND", direction = Relationship.INCOMING)
+    @Relationship(type = "ATTEND", direction = Relationship.OUTGOING)
     private Set<Person> attendPersons;
     @Relationship(type = "CREATE", direction = Relationship.INCOMING)
     private Set<Person> createPersons;
