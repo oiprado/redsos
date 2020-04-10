@@ -125,7 +125,7 @@
                         <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                     </container>
                     <to>
-                        <image>redsos-services</image>
+                        <image>trinity-dev/${project.name}</image>
                     </to>
                 </configuration>
                 <executions>
