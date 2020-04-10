@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AttendRelationshipRepository extends Neo4jRepository<AttendRelationship, Long>{
     
-    @Query("MATCH (p:Person { guid: {person} } )-[r:ATTEND]->(s:Service { guid: {service} } ) SET r.status = 'CANCELLED' ")
+    @Query("MATCH (p:Person { guid: {person} } )-[r:ATTEND]->(s:Service { guid: {service} } ) DELETE r")
     public AttendRelationship cancelRelationship( 
         final @Param("service") String service, 
         final @Param("person") String person
