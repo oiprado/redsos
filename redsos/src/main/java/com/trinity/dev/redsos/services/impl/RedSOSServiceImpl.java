@@ -100,8 +100,6 @@ public class RedSOSServiceImpl implements RedSOSService {
         
         List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
         
-        
-
         create.setStatus("ATTENDED");
 
         serviceRepository.save(create);
@@ -149,7 +147,6 @@ public class RedSOSServiceImpl implements RedSOSService {
         
     }
 
-    
     private Service getServiceById(String guid) {
         return util.getServiceByGuid(guid);
     }
