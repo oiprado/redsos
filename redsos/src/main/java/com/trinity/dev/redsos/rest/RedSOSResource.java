@@ -7,6 +7,7 @@ package com.trinity.dev.redsos.rest;
 
 import com.trinity.dev.redsos.dto.AttendServiceRequest;
 import com.trinity.dev.redsos.dto.CreateServiceRequest;
+import com.trinity.dev.redsos.dto.DeliveredRequest;
 import com.trinity.dev.redsos.services.RedSOSService;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,12 +90,13 @@ public class RedSOSResource {
     }
     
     @RequestMapping(value = "/delivered", method = RequestMethod.POST)
-    public ResponseEntity delivered(@RequestBody com.trinity.dev.redsos.dto.Service service) {
+    public ResponseEntity delivered(@RequestBody DeliveredRequest deliveredRequest) {
         try {
             
             return new ResponseEntity(
                 redSOSService.deliveredService(
-                    service
+                    deliveredRequest.getService(),
+                    deliveredRequest.getPerson()
                 ),
                 HttpStatus.OK);
         }catch(Exception ex) {

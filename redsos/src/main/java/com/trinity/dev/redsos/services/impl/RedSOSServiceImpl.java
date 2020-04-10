@@ -6,6 +6,7 @@
 package com.trinity.dev.redsos.services.impl;
 
 import com.trinity.dev.redsos.component.NotificationComponent;
+import com.trinity.dev.redsos.domain.Device;
 import com.trinity.dev.redsos.domain.Person;
 import com.trinity.dev.redsos.domain.Product;
 import com.trinity.dev.redsos.domain.Service;
@@ -25,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -91,7 +93,8 @@ public class RedSOSServiceImpl implements RedSOSService {
     public Service attendService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person, Date deliveryDate, String timeRange) {
         Service create = getServiceById(service.getGuid());
         Person attendBy = getPersonById(person.getGuid());
-
+        List<String> devices = getDevices(attendBy.getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
+        
         attendRelationshipRepository.save(
                 new AttendRelationship(
                         UUID.randomUUID(),
@@ -109,7 +112,7 @@ public class RedSOSServiceImpl implements RedSOSService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
         
         sendMessage(
-            "token", 
+            devices, 
             String.format("Hola, soy %s, quiero ayudarte.", attendBy.getName()), 
             String.format("Te llevo tu solicitud a tu casa el día %s entre %s.", sdf.format(deliveryDate), timeRange), 
             service.getGuid()
@@ -122,17 +125,21 @@ public class RedSOSServiceImpl implements RedSOSService {
         return util.getPersonByGuid(guid);
     }
 
+    @Override
     public Service getServiceById(String guid) {
         return util.getServiceByGuid(guid);
     }
 
     @Override
-    public Service deliveredService(com.trinity.dev.redsos.dto.Service service) {
+    public Service deliveredService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
         Service create = getServiceById(service.getGuid());
+        
+        List<String> devices = getDevices(person.getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
+        
         create.setStatus("DELIVERED");
         serviceRepository.save(create);
         sendMessage(
-            "token", 
+            devices, 
             String.format("Hola de nuevo."), 
             String.format("Espero poder aliviar un poco tu necesidad con esta atención"), 
             service.getGuid()
@@ -147,8 +154,7 @@ public class RedSOSServiceImpl implements RedSOSService {
         create.setStatus("ACCEPTED");
         serviceRepository.save(create);
         
-        sendMessage(
-            "token", 
+        sendBatchMessage(
             String.format("Hola a TODOS."), 
             String.format("Me alegra mucho decir que mi solicitud fue atendida. GRACIAS."), 
             service.getGuid()
@@ -160,6 +166,8 @@ public class RedSOSServiceImpl implements RedSOSService {
     public Service cancelAttend(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
 
         Service create = getServiceById(service.getGuid());
+        List<String> devices = getDevices(person.getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
+        
         create.setStatus("NEW");
 
         serviceRepository.save(create);
@@ -170,7 +178,7 @@ public class RedSOSServiceImpl implements RedSOSService {
         );
         
         sendMessage(
-            "token", 
+            devices, 
             String.format("Hola de nuevo."), 
             String.format("Lamento decirte que no esposible cumplir con esta tarea."), 
             service.getGuid()
@@ -226,9 +234,9 @@ public class RedSOSServiceImpl implements RedSOSService {
         return serviceRepository.getPermitActions(serviceGuid, userGuid).iterator().next();
     }
     
-    private void sendMessage(String token, String title, String body, String guid) {
+    private void sendMessage(List<String> tokens, String title, String body, String guid) {
         notificationComponent.send(
-            token, 
+            tokens, 
             body, 
             title, 
             guid
@@ -241,6 +249,10 @@ public class RedSOSServiceImpl implements RedSOSService {
             title,
             guid
         );
+    }
+    
+    private List<Device> getDevices(String profileName){
+        return personRepository.getDevicesByProfile(profileName);
     }
 
 }

@@ -10,6 +10,7 @@ import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.MulticastMessage;
 import com.google.firebase.messaging.Notification;
 import java.util.Arrays;
 import java.util.List;
@@ -28,20 +29,20 @@ public class NotificationComponent {
     @Autowired
     private FirebaseApp firebaseApp;
 
-    public void send(String token, String body, String title, String guid) {
+    public void send(List<String> tokens, String body, String title, String guid) {
 
         try {
             
             FirebaseApp.getInstance();
 
-            Message message = Message.builder()
+            MulticastMessage message = MulticastMessage.builder()
                     .setNotification(new Notification(title, body))
                     .putData("guid", guid)
-                    .setTopic("Red-SOS")
-                    .setToken(token)
+                    .addAllTokens(tokens)
                     .build();
 
-            String response = FirebaseMessaging.getInstance().send(message);
+            BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+            
             System.out.println("Successfully sent message: " + response);
         } catch (FirebaseMessagingException ex) {
             Logger.getLogger(NotificationComponent.class.getName()).log(Level.SEVERE, null, ex);

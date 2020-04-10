@@ -13,6 +13,7 @@ import com.trinity.dev.redsos.repository.PersonRepository;
 import com.trinity.dev.redsos.repository.relationship.UseDeviceRelationshipRepository;
 import com.trinity.dev.redsos.services.PersonService;
 import com.trinity.dev.redsos.util.Util;
+import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

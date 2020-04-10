@@ -23,7 +23,7 @@ security:
       userInfoUri: http://localhost:8081/com.trinity.dev.auth.${spring.profiles.active}/api/user/userInfo    
 google:
   application:
-    credentials: /home/oiprado/google/crendentials/service-account-file.json   
+    credentials: /home/oiprado/google/crendentials/service-account-file.json
   database:
     url: https://redsos-2020.firebaseio.com
 #---

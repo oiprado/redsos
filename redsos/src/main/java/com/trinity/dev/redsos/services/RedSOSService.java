@@ -25,7 +25,7 @@ public interface RedSOSService {
     
     public com.trinity.dev.redsos.domain.Service attendService(Service service, Person person, Date deliveryDate, String timeRange);
     
-    public com.trinity.dev.redsos.domain.Service deliveredService(Service service);
+    public com.trinity.dev.redsos.domain.Service deliveredService(Service service, Person person);
     
     public com.trinity.dev.redsos.domain.Service acceptedService(Service service);
     

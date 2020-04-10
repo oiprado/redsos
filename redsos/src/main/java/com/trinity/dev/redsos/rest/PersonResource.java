@@ -8,6 +8,8 @@ package com.trinity.dev.redsos.rest;
 import com.trinity.dev.redsos.component.NotificationComponent;
 import com.trinity.dev.redsos.dto.Person;
 import com.trinity.dev.redsos.services.PersonService;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +43,10 @@ public class PersonResource {
     
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity sendMessage(@RequestParam("token") String token){
-        notificationComponent.send(token, "Comida para hoy. Gracias", "Hola soy Oscar necesito yuda", "1");
+        List<String> tokens = new ArrayList<>();
+        tokens.add(token);
+        
+        notificationComponent.send(tokens, "Comida para hoy. Gracias", "Hola soy Oscar necesito yuda", "1");
         return new ResponseEntity(HttpStatus.OK);
     }
     
