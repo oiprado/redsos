@@ -138,11 +138,11 @@ public class RedSOSServiceImpl implements RedSOSService {
         Service service = getServiceById(guid);
 
         service.setAttendPersons(
-            personRepository.getAttendPersonByService(service.getGuid())
+                personRepository.getAttendPersonByService(service.getGuid())
         );
 
         service.setCreatePersons(
-            personRepository.getCreatePersonByService(service.getGuid())
+                personRepository.getCreatePersonByService(service.getGuid())
         );
 
         Iterable<Map<String, Object>> at = attendRelationshipRepository.getRelationship(guid);
@@ -151,10 +151,9 @@ public class RedSOSServiceImpl implements RedSOSService {
 
         BeanUtils.copyProperties(service, response);
 
-        if(at.iterator().hasNext()) {
+        if (at.iterator().hasNext()) {
             response.setDelivery(at.iterator().next());
         }
-        
 
         return response;
 
@@ -243,14 +242,16 @@ public class RedSOSServiceImpl implements RedSOSService {
 
         Set<Person> creates = personRepository.getAttendPersonByService(service.getGuid());
 
-        List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
+        if (creates.iterator().hasNext()) {
+            List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
 
-        sendMessage(
-                devices,
-                String.format("Hola soy %s", user.getName()),
-                "Estoy muy agradecido con su solidaridad, en éste momento acabo de cancelar mi solicitud. Gracias",
-                create.getGuid()
-        );
+            sendMessage(
+                    devices,
+                    String.format("Hola soy %s", user.getName()),
+                    "Estoy muy agradecido con su solidaridad, en éste momento acabo de cancelar mi solicitud. Gracias",
+                    create.getGuid()
+            );
+        }
 
         return create;
     }
