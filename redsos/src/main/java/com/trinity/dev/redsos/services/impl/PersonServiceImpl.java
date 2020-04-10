@@ -62,7 +62,11 @@ public class PersonServiceImpl implements PersonService {
     }
     
     private void linkDivice(Person person, Device device) {
-        deviceRelationshipRepository.save(new UseDeviceRelarionship(person, device));
+        Device exists = deviceRepository.findByToken(device.getToken());
+        if(exists == null){
+            deviceRelationshipRepository.save(new UseDeviceRelarionship(person, device));
+        }
+        
     }
     
 }
