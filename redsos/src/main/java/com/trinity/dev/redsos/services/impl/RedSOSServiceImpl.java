@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -92,8 +93,12 @@ public class RedSOSServiceImpl implements RedSOSService {
     @Override
     public Service attendService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person, Date deliveryDate, String timeRange) {
         Service create = getServiceById(service.getGuid());
+        
         Person attendBy = getPersonById(person.getGuid());
-        List<String> devices = getDevices(attendBy.getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
+        
+        Set<Person> creates = personRepository.getCreatePersonByService(service.getGuid());
+        
+        List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
         
         attendRelationshipRepository.save(
                 new AttendRelationship(
@@ -149,9 +154,12 @@ public class RedSOSServiceImpl implements RedSOSService {
 
     @Override
     public Service deliveredService(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
+        
         Service create = getServiceById(service.getGuid());
         
-        List<String> devices = getDevices(person.getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
+        Set<Person> creates = personRepository.getCreatePersonByService(service.getGuid());
+        
+        List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
         
         create.setStatus("DELIVERED");
         serviceRepository.save(create);
@@ -171,7 +179,12 @@ public class RedSOSServiceImpl implements RedSOSService {
         create.setStatus("ACCEPTED");
         serviceRepository.save(create);
         
-        sendBatchMessage(
+        Set<Person> creates = personRepository.getAttendPersonByService(service.getGuid());
+        
+        List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
+        
+        sendMessage(
+            devices,
             String.format("Hola a TODOS."), 
             String.format("Me alegra mucho decir que mi solicitud fue atendida. GRACIAS."), 
             service.getGuid()
@@ -183,7 +196,6 @@ public class RedSOSServiceImpl implements RedSOSService {
     public Service cancelAttend(com.trinity.dev.redsos.dto.Service service, com.trinity.dev.redsos.dto.Person person) {
 
         Service create = getServiceById(service.getGuid());
-        List<String> devices = getDevices(person.getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
         
         create.setStatus("NEW");
 
@@ -194,10 +206,9 @@ public class RedSOSServiceImpl implements RedSOSService {
                 person.getGuid()
         );
         
-        sendMessage(
-            devices, 
+        sendBatchMessage( 
             String.format("Hola de nuevo."), 
-            String.format("Lamento decirte que no esposible cumplir con esta tarea."), 
+            String.format("Lamento decirte que no es posible cumplir con esta tarea."), 
             service.getGuid()
         );
         
@@ -218,9 +229,14 @@ public class RedSOSServiceImpl implements RedSOSService {
             person.getGuid()
         );
         
-        sendBatchMessage(
-            String.format("Hola a todos soy %s", user.getName()),
-            "Estoy muy agradecido con su solidaridad, es éste momento acabo de cancelar mi solicitud", 
+        Set<Person> creates = personRepository.getAttendPersonByService(service.getGuid());
+        
+        List<String> devices = getDevices(creates.iterator().next().getGuid()).stream().map(x -> x.getToken()).collect(Collectors.toList());
+        
+        sendMessage(
+            devices,
+            String.format("Hola soy %s", user.getName()),
+            "Estoy muy agradecido con su solidaridad, en éste momento acabo de cancelar mi solicitud. Gracias", 
             create.getGuid()
         );
         
