@@ -1,47 +1,17 @@
 server:
     servlet:
-      context-path: /com.trinity.dev.agora
+      context-path: /com.trinity.dev.redsos
     port: 8082
 spring:
   profiles.active: developer # test server configuration
   application: 
     name: com.trinity.dev.agora
   jmx:
-    default-server: com.trinity.dev.agora
+    default-server: com.trinity.dev.redsos
 #  main:
-#    allow-bean-definition-overriding: true
-security:
-  basic:
-    enabled: false
-  oauth2:
-    client:
-      clientId: spring-security-oauth2-read-write-client
-      clientSecret: spring-security-oauth2-read-write-client-password1234
-      accessTokenUri: http://localhost:8081/com.trinity.dev.auth.${spring.profiles.active}/oauth/token
-      userAuthorizationUri: http://localhost:8081/com.trinity.dev.auth.${spring.profiles.active}/oauth/authorize
-    resource:
-      userInfoUri: http://localhost:8081/com.trinity.dev.auth.${spring.profiles.active}/api/user/userInfo    
+#    allow-bean-definition-overriding: true:
 google:
   application:
-    credentials: /home/oiprado/google/crendentials/service-account-file.json
+    credentials: ${GOOGLE_APPLICATION_CREDENTIALS:resources/service-account-file.json}
   database:
-    url: https://redsos-2020.firebaseio.com
-#---
-#spring:
-#  profiles: developer # test server configuration
-#  data:
-#    neo4j:
-#      username: neo4j
-#      password: admin
-#      uri: bolt://localhost:7687
-#security:
-#  basic:
-#    enabled: false
-#  oauth2:
-#    client:
-#      clientId: spring-security-oauth2-read-write-client
-#      clientSecret: spring-security-oauth2-read-write-client-password1234
-#      accessTokenUri: http://localhost:8081/com.trinity.dev.auth/oauth/token
-#      userAuthorizationUri: http://localhost:8081/com.trinity.dev.auth/oauth/authorize
-#    resource:
-#      userInfoUri: http://localhost:8081/com.trinity.dev.auth/api/userInfo
+    url: ${https://redsos-2020.firebaseio.com}

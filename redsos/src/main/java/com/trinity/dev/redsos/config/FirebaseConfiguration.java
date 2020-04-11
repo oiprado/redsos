@@ -32,20 +32,19 @@ public class FirebaseConfiguration {
     
     @Bean
     public FirebaseApp firebaseApp() {
-        FirebaseApp firebaseApp = null;
         try {
             FileInputStream refreshToken = new FileInputStream(googleApplicationCredentials);
-            
             FirebaseOptions options = new FirebaseOptions.Builder()
+//                .setCredentials(GoogleCredentials.getApplicationDefault())
                 .setCredentials(GoogleCredentials.fromStream(refreshToken))
                 .setDatabaseUrl(database)
                 .build();
-            firebaseApp = FirebaseApp.initializeApp(options);
+            return FirebaseApp.initializeApp(options);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(FirebaseConfiguration.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(FirebaseConfiguration.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return firebaseApp;
+        return null;
     }
 }

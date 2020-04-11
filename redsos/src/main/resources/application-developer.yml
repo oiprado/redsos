@@ -4,5 +4,5 @@ spring:
   data:
     neo4j:
       username: neo4j
-      password: admin
-      uri: bolt://localhost:7687
+      password: neo4j
+      uri: ${SPRING_DATASOURCE_URL:bolt://localhost:7687}
