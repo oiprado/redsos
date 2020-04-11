@@ -23,11 +23,11 @@ import javax.annotation.PostConstruct;
 @Configuration
 public class Neo4jConfigurer {
 
-    @Value("${data.neo4j.username}")
+    @Value("${spring.data.neo4j.username}")
     private String username;
-    @Value("${data.neo4j.password}")
+    @Value("${spring.data.neo4j.password}")
     private String password;
-    @Value("${data.neo4j.uri}")
+    @Value("${spring.data.neo4j.uri}")
     private String uri;
     @Autowired
     private Environment environment;
@@ -36,7 +36,6 @@ public class Neo4jConfigurer {
 
    @PostConstruct
     public void showVaraibles() {
-
        log.debug(String.format("NEO4J_USER=%s",username));
        log.debug(String.format("NEO4J_PASSWORD=%s",password));
        log.debug(String.format("NEO4J_URI=%s",uri));
