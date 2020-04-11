@@ -4,4 +4,4 @@ ADD https://neo4j.com/download-thanks/?edition=community&release=3.5.17&flavour=
 
 EXPOSE 7474 7473 7687
 
-VOLUME []
+VOLUME [neo4j]
