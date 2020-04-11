@@ -36,9 +36,9 @@ public class Neo4jConfigurer {
 
    @PostConstruct
     public void showVaraibles() {
-       log.debug(String.format("NEO4J_USER=%s",username));
-       log.debug(String.format("NEO4J_PASSWORD=%s",password));
-       log.debug(String.format("NEO4J_URI=%s",uri));
+       log.info(String.format("NEO4J_USER=%s",username));
+       log.info(String.format("NEO4J_PASSWORD=%s",password));
+       log.info(String.format("NEO4J_URI=%s",uri));
 
    }
 }
