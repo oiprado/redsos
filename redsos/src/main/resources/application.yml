@@ -15,3 +15,12 @@ google:
     credentials: ${GOOGLE_APPLICATION_CREDENTIALS:resources/service-account-file.json}
   database:
     url: ${https://redsos-2020.firebaseio.com}
+security:
+  oauth2:
+    client:
+      clientId: spring-security-oauth2-read-write-client
+      clientSecret: spring-security-oauth2-read-write-client-password1234
+      accessTokenUri: http://localhost:8081/com.trinity.dev.auth.${spring.profiles.active}/oauth/token
+      userAuthorizationUri: http://localhost:8081/com.trinity.dev.auth.${spring.profiles.active}/oauth/authorize
+    resource:
+      userInfoUri: http://localhost:8081/com.trinity.dev.auth.${spring.profiles.active}/api/user/userInfo
