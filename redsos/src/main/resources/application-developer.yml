@@ -1,8 +1,8 @@
 ---
 spring:
-  profiles: developer # test server configuration
+  profiles: developer
   data:
     neo4j:
-      username: neo4j
-      password: neo4j
-      uri: ${SPRING_DATASOURCE_URL:bolt://localhost:7687}
+      username: ${REDSOS_USERNAME:neo4j}
+      password: ${REDSOS_PASSWORD:neo4j}
+      uri: ${REDSOS_DATASOURCE_URL:bolt://localhost:7688}

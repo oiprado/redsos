@@ -12,7 +12,7 @@ spring:
 #    allow-bean-definition-overriding: true:
 google:
   application:
-    credentials: ${GOOGLE_APPLICATION_CREDENTIALS:resources/service-account-file.json}
+    credentials: ${GOOGLE_APPLICATION_CREDENTIALS:/opt/google/crendentials/service-account-file.json}
   database:
     url: ${https://redsos-2020.firebaseio.com}
 security:

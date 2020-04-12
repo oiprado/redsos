@@ -3,6 +3,6 @@ spring:
   profiles: production # test server configuration
   data:
     neo4j:
-      username: ${NEO4J_USER}
-      password: ${NEO4J_PASSWORD}
-      uri: ${SPRING_DATASOURCE_URL}
+      username: ${REDSOS_USERNAME:neo4j}
+      password: ${REDSOS_PASSWORD:admin}
+      uri: ${REDSOS_DATASOURCE_URL}

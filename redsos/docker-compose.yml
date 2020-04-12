@@ -1,36 +1,16 @@
 version: '3.7'
 services:
     redsos-app:
-        image: trinity-dev/redsos
+        build: .
+        image: trinity-dev/redsos-services:1.2
         environment:
             - JAVA_OPTIONS=-Xmx512m -Xms256m
-            - SPRING_PROFILES_ACTIVE=production
-            - SPRING_DATASOURCE_URL=bolt://127.0.0.1:7687
+            - SPRING_PROFILES_ACTIVE=developer
+            - SPRING_DATASOURCE_URL=bolt://192.168.64.2:7687
             - JHIPSTER_SLEEP=10
-            - NEO4J_USER=neo4j
-            - NEO4J_PASSWORD=n304J
+            - REDSOS_USERNAME=neo4j
+            - REDSOS_PASSWORD=admin
             - GOOGLE_APPLICATION_CREDENTIALS=/home/redsos/config/service-account-file.json
             - GOOGLE_DATABASE_URL=https://redsos-2020.firebaseio.com
         ports:
             - 8082:8082
-        depends_on:
-            - redsos-neo4j
-        networks:
-            - redsos-network
-    redsos-neo4j:
-        image: neo4j:3.5.8
-        restart: always
-        volumes:
-            - neo4j
-            - ${HOME}/neo4j/data:/data
-            - ${HOME}/neo4j/logs:/logs
-        environment:
-            - NEO4J_AUTH=neo4j/n304J
-            -
-        ports:
-            - 7687:7687
-            - 7474:7474
-        networks:
-            - redsos-network
-networks:
-    redsos-network:
