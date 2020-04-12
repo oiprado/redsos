@@ -1,6 +1,7 @@
 version: '3.7'
 services:
     redsos-app:
+        container_name: redsos-services
         build: .
         image: trinity-dev/redsos-services:1.2
         environment:
